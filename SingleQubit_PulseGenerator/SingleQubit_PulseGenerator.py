@@ -152,9 +152,9 @@ class Driver(InstrumentDriver.InstrumentWorker):
         vTime, vPulse, vIndx = self.getPulseEnvelope(nType, dTime, bTimeStart)
         if len(vTime) == 0:
             return
-        # apply DRAG, if wanted
+        # apply DRAG if desired (setting to zero value is equivalent to no application)
         if self.getValue('Use DRAG'):
-            beta = self.getValue('DRAG scaling')*self.getValue('Sample rate')
+            beta = self.getValue('DRAG #%d' % nType)*self.getValue('Sample rate')
             vIout = vPulse
             vQout = beta * np.gradient(vPulse)
         else:
