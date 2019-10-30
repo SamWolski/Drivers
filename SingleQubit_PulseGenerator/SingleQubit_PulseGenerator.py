@@ -131,6 +131,14 @@ class Driver(InstrumentDriver.InstrumentWorker):
         if start_at_zero:
             vPulse = vPulse - vPulse.min()
             vPulse = vPulse/vPulse.max()*dAmp
+
+        if self.getValue('Correct nonlinearity'):
+            dAmp0 = self.getValue('Characteristic amplitude #%d' % nType)
+            if dAmp > 0 and dAmp0 > 0:
+                alpha = 0.1
+                correction = alpha + (1 - alpha) * (((vPulse / dAmp0)**2) / ((vPulse / dAmp0)**2 + 1))
+                vPulse = vPulse / correction
+
         # return both time, envelope, and indices
         return (vTime, vPulse, vIndx)
 
